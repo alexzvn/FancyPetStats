@@ -1,0 +1,7 @@
+
+
+pets:
+  cua:
+    stats:
+      - DAMAGE: 20
+      - MAGIC_DAMGE: 5

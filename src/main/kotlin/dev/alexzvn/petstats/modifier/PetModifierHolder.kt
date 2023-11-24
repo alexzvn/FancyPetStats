@@ -3,6 +3,7 @@ package dev.alexzvn.petstats.modifier
 import dev.alexzvn.petstats.FancyPetStats
 import dev.alexzvn.petstats.utils.warning
 import net.Indyuce.mmocore.api.player.PlayerData
+import org.bukkit.entity.Player
 import java.util.UUID
 
 object PetModifierHolder {
@@ -17,6 +18,7 @@ object PetModifierHolder {
      */
     private val clearQueue = mutableMapOf<UUID, Set<StatsConfig>>()
 
+
     fun load() {
         modifiers.clear()
 
@@ -28,6 +30,16 @@ object PetModifierHolder {
                 modifiers[name] = StatsConfig(it)
             }
         }
+    }
+
+    fun check(player: Player, pet: String): Boolean {
+        if (!has(pet)) {
+            return true
+        }
+
+        val perm = modifiers[pet]!!.getPermission() ?: return true
+
+        return player.hasPermission(perm)
     }
 
     fun has(name: String): Boolean {
@@ -50,12 +62,20 @@ object PetModifierHolder {
         return modifiers.count()
     }
 
+    fun bind(player: Player, pet: String) {
+        bind(player.uniqueId, pet)
+    }
+
     fun bind(player: UUID, pet: String) {
         val mmo = PlayerData.get(player).mmoPlayerData
         val stats = get(pet) ?: return
 
         queue(player, stats)
         stats.bind(mmo)
+    }
+
+    fun unbind(player: Player, pet: String) {
+        unbind(player.uniqueId, pet)
     }
 
     fun unbind(player: UUID, pet: String) {
@@ -77,6 +97,16 @@ object PetModifierHolder {
         clearQueue.remove(player)
     }
 
+    fun forget(player: UUID, pet: String) {
+        clearQueue[player]?.apply {
+            val mmo = PlayerData.get(player).mmoPlayerData
+            val stat = find { value -> value.id == pet  } ?: return@apply
+
+            stat.unbind(mmo)
+            minus(stat)
+        }
+    }
+
     fun unload() {
         clearQueue.forEach { (player, stats) ->
             val mmo = PlayerData.get(player).mmoPlayerData
@@ -87,5 +117,10 @@ object PetModifierHolder {
 
         clearQueue.clear()
         modifiers.clear()
+    }
+
+    fun reload() {
+        unload()
+        load()
     }
 }

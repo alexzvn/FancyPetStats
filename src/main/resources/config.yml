@@ -2,6 +2,13 @@
 
 pets:
   cua:
+    permission: abc.xyz.123 # optional
     stats:
-      - DAMAGE: 20
-      - MAGIC_DAMGE: 5
+      DAMAGE: 20
+      MAGIC_DAMGE: 5
+
+permissions:
+  "fancy.abc.123":
+    stats:
+      DAMAGE: 20
+      MAGIC_DAMGE: 5

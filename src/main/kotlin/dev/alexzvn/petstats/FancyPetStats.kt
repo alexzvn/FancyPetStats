@@ -1,9 +1,12 @@
 package dev.alexzvn.petstats
 
+import dev.alexzvn.petstats.listeners.PermissionChangeListener
 import dev.alexzvn.petstats.listeners.PetActionListener
 import dev.alexzvn.petstats.listeners.PlayerActionListener
+import dev.alexzvn.petstats.modifier.ModifierHolder
 import dev.alexzvn.petstats.modifier.PetModifierHolder
 import dev.alexzvn.petstats.utils.listen
+import dev.alexzvn.petstats.utils.withLuckperms
 import org.bukkit.plugin.java.JavaPlugin
 
 class FancyPetStats : JavaPlugin() {
@@ -23,16 +26,14 @@ class FancyPetStats : JavaPlugin() {
 
     override fun onEnable() {
         saveDefaultConfig()
-        PetModifierHolder.load()
-        PetModifierHolder.count().also {total ->
-            logger.info("Loaded $total section")
-        }
+        ModifierHolder.load()
 
         PetActionListener().listen()
         PlayerActionListener().listen()
+        PermissionChangeListener().listen()
     }
 
     override fun onDisable() {
-        PetModifierHolder.unload()
+        ModifierHolder.unload()
     }
 }

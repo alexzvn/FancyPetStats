@@ -1,6 +1,6 @@
-name: FancyPetStats
+name: ${project.name}
 main: dev.alexzvn.petstats.FancyPetStats
-version: 1.0.0
+version: ${project.version}
 api-version: 1.16
 
 author: Alexzvn
@@ -10,3 +10,6 @@ load: STARTUP
 depend:
   - MCPets
   - MMOCore
+
+softdepend:
+  - LuckPerms

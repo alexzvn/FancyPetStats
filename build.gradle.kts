@@ -6,7 +6,8 @@ plugins {
 }
 
 group = "dev.alexzvn.petstats"
-version = "1.0.0-SNAPSHOT"
+version = "1.0.1"
+
 java.sourceCompatibility = JavaVersion.VERSION_16
 
 repositories {
@@ -27,6 +28,7 @@ dependencies {
     compileOnly("net.Indyuce:MMOCore-API:1.12.1-SNAPSHOT")
     compileOnly("io.lumine:Mythic-Dist:5.3.5")
     compileOnly("fr.nocsy:mcpets:2.0.0-SNAPSHOT")
+    compileOnly("net.luckperms:api:5.4")
 
     shadow("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
